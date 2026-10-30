@@ -2,11 +2,11 @@
 <html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mint Focus · 薄荷时光</title>
 <style>
 *{box-sizing:border-box}body{margin:0;color:#244b4b;font:16px system-ui,sans-serif;background:radial-gradient(ellipse at 10% 20%,#c9e9f9,transparent 65%),radial-gradient(ellipse at 90% 90%,#bcebd7,transparent 60%),#eff8f3;min-height:100vh}header{max-width:1100px;margin:auto;padding:36px 24px;display:flex;justify-content:space-between;align-items:center}.brand{font-size:22px;font-weight:750}small,.muted{color:#607e7e}main{max-width:1000px;margin:35px auto;padding:0 24px}h1{font-size:38px;margin-bottom:12px;letter-spacing:-1px}.intro{margin-bottom:35px}.grid{display:grid;grid-template-columns:1.4fr 1fr;gap:24px}.card{background:#ffffffb5;border:1px solid #fff;border-radius:28px;padding:30px;box-shadow:0 18px 65px #396d6510}.timer{text-align:center}.tabs{display:flex;justify-content:center;gap:8px}button,input{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 19px;background:#e6f1ee;color:#335b58}button.active,button.primary{background:#327c70;color:white}button:disabled{opacity:.45;cursor:default}.clock{font-size:clamp(64px,9vw,100px);font-weight:650;letter-spacing:-5px;font-variant-numeric:tabular-nums;margin:34px 0 8px}.status{min-height:24px;margin-bottom:22px}.controls{display:flex;justify-content:center;gap:10px}.custom{margin-top:27px;font-size:14px}input{border:1px solid #c5dcd6;border-radius:10px;background:#ffffffbd;padding:10px;color:#244b4b}input[type=number]{width:80px}.progress{height:5px;background:#dfebe7;margin:30px 0 0;border-radius:5px;overflow:hidden}.progress i{display:block;height:100%;background:#6bb6a2;width:0}.tasks h2{font-size:20px;margin-top:0}.add{display:flex;gap:8px}.add input{width:100%;min-width:0}.add button{padding:10px 14px}ul{padding:0;list-style:none}li{display:flex;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid #dbe9e4}li span{flex:1;overflow-wrap:anywhere}li.done span{text-decoration:line-through;color:#849795}li button{padding:3px 9px;background:transparent}.empty{padding:25px 0;line-height:1.8;font-size:14px}footer{text-align:center;margin:30px;color:#64827c;font-size:13px}@media(max-width:700px){.grid{grid-template-columns:1fr}main{margin:0 auto}h1{font-size:30px}header{padding:24px}.card{padding:24px}}
-</style>
+.drag-handle{cursor:grab;touch-action:auto}.drag-handle:active{cursor:grabbing}li.dragging{opacity:.4}li.drop-target{outline:2px dashed #327c70;border-radius:8px}li{gap:6px}li button{padding:5px;min-width:26px}li input[type=checkbox]{flex-shrink:0}li span{min-width:0}button:focus-visible{outline:2px solid #327c70;outline-offset:3px}</style>
 <header><div class="brand">◒ Mint Focus <small>薄荷时光</small></div><small id="date"></small></header>
 <main><div class="intro"><small>MAKE ROOM FOR FOCUS</small><h1>慢慢来，一次专注一件事。</h1><p class="muted">给自己一段安静的时间，也别忘了好好休息。</p></div>
 <div class="grid"><section class="card timer" aria-label="番茄钟"><div class="tabs"><button id="focus" class="active">专注</button><button id="rest">休息</button></div><div class="clock" id="clock" role="timer">25:00</div><div class="status muted" id="status" aria-live="polite">准备好就开始吧</div><div class="controls"><button id="start" class="primary">开始专注</button><button id="pause" disabled>暂停</button><button id="end" disabled>结束</button></div><div class="custom"><label for="minutes">自定义时长</label> <input id="minutes" type="number" min="1" max="180" value="25"> 分钟 <button id="apply">应用</button></div><div class="progress"><i id="bar"></i></div></section>
-<section class="card tasks"><h2>今日待办 <small id="count"></small></h2><p class="muted">把脑海里的事，轻轻放在这里。</p><form class="add" id="form"><input id="task" maxlength="150" placeholder="今天想完成什么？" aria-label="新增待办" required><button class="primary" aria-label="添加待办">＋</button></form><ul id="list"></ul><div class="empty muted" id="empty">还没有待办。<br>从一件小事开始就很好。</div></section></div><footer>留一点时间给专注，也留一点给自己。 · 数据仅保存在当前浏览器</footer></main>
+<section class="card tasks"><h2>今日待办 <small id="count"></small></h2><p class="muted">越靠前，优先级越高。拖动 ⠿ 或用 ↑ ↓ 排序；已完成事项自动置底。</p><form class="add" id="form"><input id="task" maxlength="150" placeholder="今天想完成什么？" aria-label="新增待办" required><button class="primary" aria-label="添加待办">＋</button></form><ul id="list"></ul><div class="empty muted" id="empty">还没有待办。<br>从一件小事开始就很好。</div></section></div><footer>留一点时间给专注，也留一点给自己。 · 数据仅保存在当前浏览器</footer></main>
 <script>
 const $=id=>document.getElementById(id);
 let mode='focus',total=1500,remaining=1500,deadline=0,running=false,ticker=null;
@@ -25,7 +25,32 @@ document.addEventListener('visibilitychange',()=>{if(running)tick();});
 let day='',tasks=[];const dayKey=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();};
 function loadDay(){day=dayKey();$('date').textContent=new Date().toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'long'});try{tasks=JSON.parse(localStorage.getItem('mint-tasks-'+day)||'[]');if(!Array.isArray(tasks))tasks=[];tasks=tasks.filter(t=>t&&typeof t.text==='string');}catch{tasks=[];}draw();}
 function save(){try{localStorage.setItem('mint-tasks-'+day,JSON.stringify(tasks));}catch{$('empty').textContent='浏览器存储不可用，待办暂时保存在本页。';}}
-function draw(){$('list').replaceChildren();tasks.forEach((t,i)=>{const li=document.createElement('li');li.className=t.done?'done':'';const cb=document.createElement('input');cb.type='checkbox';cb.checked=!!t.done;cb.setAttribute('aria-label','完成 '+t.text);cb.onchange=()=>{t.done=cb.checked;save();draw();};const span=document.createElement('span');span.textContent=t.text;const del=document.createElement('button');del.textContent='×';del.setAttribute('aria-label','删除 '+t.text);del.onclick=()=>{tasks.splice(i,1);save();draw();};li.append(cb,span,del);$('list').append(li);});$('empty').hidden=tasks.length>0;$('count').textContent=tasks.filter(t=>t.done).length+'/'+tasks.length;}
+let dragged=null;
+function groupTasks(){tasks=[...tasks.filter(t=>!t.done),...tasks.filter(t=>t.done)];}
+function moveTask(task,target,after=false){
+ if(task===target||!!task.done!==!!target.done)return;
+ const from=tasks.indexOf(task);if(from<0||!tasks.includes(target))return;
+ tasks.splice(from,1);tasks.splice(tasks.indexOf(target)+(after?1:0),0,task);save();draw();
+}
+function completeTask(task,done){task.done=done;tasks.splice(tasks.indexOf(task),1);if(done)tasks.push(task);else{const at=tasks.findIndex(t=>t.done);tasks.splice(at<0?tasks.length:at,0,task);}save();draw();}
+function draw(){
+ groupTasks();$('list').replaceChildren();
+ tasks.forEach((t,i)=>{
+ const li=document.createElement('li');li.className=t.done?'done':'';
+ const handle=document.createElement('button');handle.textContent='⠿';handle.className='drag-handle';handle.draggable=true;handle.title='拖动调整优先级';handle.setAttribute('aria-label','拖动排序 '+t.text);
+ handle.ondragstart=e=>{dragged=t;e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',String(i));li.classList.add('dragging');};
+ handle.ondragend=()=>{dragged=null;document.querySelectorAll('.dragging,.drop-target').forEach(el=>el.classList.remove('dragging','drop-target'));};
+ li.ondragover=e=>{if(dragged&&dragged!==t&&!!dragged.done===!!t.done){e.preventDefault();e.dataTransfer.dropEffect='move';li.classList.add('drop-target');}};
+ li.ondragleave=()=>li.classList.remove('drop-target');
+ li.ondrop=e=>{e.preventDefault();li.classList.remove('drop-target');if(dragged){const rect=li.getBoundingClientRect();moveTask(dragged,t,e.clientY>rect.top+rect.height/2);dragged=null;}};
+ const cb=document.createElement('input');cb.type='checkbox';cb.checked=!!t.done;cb.setAttribute('aria-label','完成 '+t.text);cb.onchange=()=>completeTask(t,cb.checked);
+ const span=document.createElement('span');span.textContent=t.text;
+ const up=document.createElement('button');up.textContent='↑';up.title='提高优先级';up.setAttribute('aria-label','上移 '+t.text);up.disabled=i===0||!!tasks[i-1].done!==!!t.done;up.onclick=()=>{const target=tasks[i-1];moveTask(t,target);};
+ const down=document.createElement('button');down.textContent='↓';down.title='降低优先级';down.setAttribute('aria-label','下移 '+t.text);down.disabled=i===tasks.length-1||!!tasks[i+1].done!==!!t.done;down.onclick=()=>{const target=tasks[i+1];moveTask(t,target,true);};
+ const del=document.createElement('button');del.textContent='×';del.setAttribute('aria-label','删除 '+t.text);del.onclick=()=>{tasks.splice(tasks.indexOf(t),1);save();draw();};
+ li.append(handle,cb,span,up,down,del);$('list').append(li);
+ });$('empty').hidden=tasks.length>0;$('count').textContent=tasks.filter(t=>t.done).length+'/'+tasks.length;
+}
 $('form').onsubmit=e=>{e.preventDefault();if(dayKey()!==day)loadDay();const text=$('task').value.trim();if(!text)return;tasks.push({text,done:false});save();draw();$('task').value='';};
 setInterval(()=>{if(dayKey()!==day)loadDay();},1000);loadDay();render();
 </script></html>
