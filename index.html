@@ -5,15 +5,30 @@
 .drag-handle{cursor:grab;touch-action:auto}.drag-handle:active{cursor:grabbing}li.dragging{opacity:.4}li.drop-target{outline:2px dashed #327c70;border-radius:8px}li{gap:6px}li button{padding:5px;min-width:26px}li input[type=checkbox]{flex-shrink:0}li span{min-width:0}button:focus-visible{outline:2px solid #327c70;outline-offset:3px}.directions{margin-top:18px}.directions button{font-size:14px;padding:8px 18px}.directions button.active{background:#d0e9e2;color:#245e54;box-shadow:inset 0 0 0 1px #80b9a9}[hidden]{display:none!important}
 .grid{display:block;max-width:680px;margin:auto}main{max-width:900px;padding-left:120px}.side-nav{position:fixed;left:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:5;padding:10px;border:1px solid #ffffffcc;border-radius:22px;background:#f5fcf7c9;box-shadow:0 8px 30px #396d6510;backdrop-filter:blur(12px)}.side-nav button{display:flex;align-items:center;gap:10px;background:transparent;padding:14px 16px}.side-nav button span{font-size:23px}.side-nav button.active{background:#327c70;color:white}.timer{padding:38px}.tasks{min-height:360px}
 @media(max-width:700px){main{padding:0 20px 110px}.side-nav{left:50%;top:auto;bottom:18px;transform:translateX(-50%);flex-direction:row;white-space:nowrap;padding:6px;border-radius:18px}.side-nav button{padding:10px 15px}.timer{padding:24px}.intro h1{font-size:28px}}
-</style>
+select{font:inherit;padding:10px;border:1px solid #c5dcd6;border-radius:10px;background:#fff;color:#244b4b}#plan-form{display:grid;gap:16px}#plan-form label{display:flex;flex-direction:column;gap:8px}#plan-list li{flex-wrap:wrap}#plan-list .plan-info{flex:1;min-width:160px}#plan-list .plan-info small{display:block;margin-top:5px}.history{text-align:left;margin-top:30px;border-top:1px solid #dbe9e4;padding-top:20px}.history h2{font-size:20px}.history p{font-size:13px}.history li{display:block;font-size:14px;line-height:1.8}.history li small{display:block}.side-nav button{white-space:nowrap}@media(max-width:700px){.side-nav{max-width:calc(100vw - 20px)}.side-nav button{padding:10px;font-size:13px;gap:5px}.side-nav button span{font-size:18px}}</style>
 <header><div class="brand">◒ Mint Focus <small>薄荷时光</small></div><small id="date"></small></header>
-<nav class="side-nav" aria-label="功能导航"><button id="nav-timer" class="active" aria-current="page"><span aria-hidden="true">◷</span>番茄钟</button><button id="nav-tasks"><span aria-hidden="true">☑</span>待办清单</button></nav><main><div class="intro"><small>MAKE ROOM FOR FOCUS</small><h1 id="page-title">慢慢来，一次专注一件事。</h1><p class="muted" id="page-description">给自己一段安静的时间，也别忘了好好休息。</p></div>
-<div class="grid"><section id="timer-page" class="card timer" aria-label="番茄钟"><div class="tabs"><button id="focus" class="active">专注</button><button id="rest">休息</button></div><div id="directions" class="tabs directions" role="group" aria-label="专注计时方式"><button id="up" aria-pressed="false">正向计时</button><button id="down" class="active" aria-pressed="true">倒计时</button></div><div class="clock" id="clock" role="timer">25:00</div><div class="status muted" id="status" aria-live="polite">准备好就开始吧</div><div class="controls"><button id="start" class="primary">开始专注</button><button id="pause" disabled>暂停</button><button id="end" disabled>结束</button></div><div class="custom" id="custom"><label for="minutes">自定义时长</label> <input id="minutes" type="number" min="1" max="180" value="25"> 分钟 <button id="apply">应用</button></div><div class="progress" id="progress"><i id="bar"></i></div></section>
-<section id="tasks-page" class="card tasks" hidden aria-label="每日待办"><h2>今日待办 <small id="count"></small></h2><p class="muted">越靠前，优先级越高。拖动 ⠿ 或用 ↑ ↓ 排序；已完成事项自动置底。</p><form class="add" id="form"><input id="task" maxlength="150" placeholder="今天想完成什么？" aria-label="新增待办" required><button class="primary" aria-label="添加待办">＋</button></form><ul id="list"></ul><div class="empty muted" id="empty">还没有待办。<br>从一件小事开始就很好。</div></section></div><footer>留一点时间给专注，也留一点给自己。 · 数据仅保存在当前浏览器</footer></main>
+<nav class="side-nav" aria-label="功能导航"><button id="nav-timer" class="active" aria-current="page"><span aria-hidden="true">◷</span>番茄钟</button><button id="nav-plans"><span aria-hidden="true">▦</span>专注计划</button><button id="nav-tasks"><span aria-hidden="true">☑</span>待办清单</button></nav><main><div class="intro"><small>MAKE ROOM FOR FOCUS</small><h1 id="page-title">慢慢来，一次专注一件事。</h1><p class="muted" id="page-description">给自己一段安静的时间，也别忘了好好休息。</p></div>
+<div class="grid"><section id="timer-page" class="card timer" aria-label="番茄钟"><div class="tabs"><button id="focus" class="active">专注</button><button id="rest">休息</button></div><div id="directions" class="tabs directions" role="group" aria-label="专注计时方式"><button id="up" aria-pressed="false">正向计时</button><button id="down" class="active" aria-pressed="true">倒计时</button></div><p id="focus-label" class="muted">自由专注</p><div class="clock" id="clock" role="timer">25:00</div><div class="status muted" id="status" aria-live="polite">准备好就开始吧</div><div class="controls"><button id="start" class="primary">开始专注</button><button id="pause" disabled>暂停</button><button id="end" disabled>结束</button></div><div class="custom" id="custom"><label for="minutes">自定义时长</label> <input id="minutes" type="number" min="1" max="180" value="25"> 分钟 <button id="apply">应用</button></div><div class="progress" id="progress"><i id="bar"></i></div><div class="history"><h2>专注记录</h2><p class="muted">结束后记录起止时间，时长不含暂停。刷新会中断当前计时。</p><p id="storage-note" role="status"></p><ul id="history-list"></ul><p id="history-empty" class="muted">完成一轮专注后，记录会出现在这里。</p></div></section>
+<section class="card plans" id="plans-page" hidden aria-label="专注计划"><h2>专注计划</h2><p class="muted">把想投入的事情存下来，准备好后就开始。</p><form id="plan-form"><label>专注内容<input id="plan-name" maxlength="80" required placeholder="例如：数学"></label><label>计时方式<select id="plan-direction"><option value="down">倒计时</option><option value="up">正向计时</option></select></label><label id="plan-duration-label">时长（分钟）<input id="plan-duration" type="number" min="1" max="180" value="50"></label><div><button class="primary" id="plan-save">保存计划</button> <button type="button" id="plan-cancel" hidden>取消编辑</button></div></form><ul id="plan-list"></ul><p id="plans-empty" class="muted">还没有计划，添加第一项吧。</p></section><section id="tasks-page" class="card tasks" hidden aria-label="每日待办"><h2>今日待办 <small id="count"></small></h2><p class="muted">越靠前，优先级越高。拖动 ⠿ 或用 ↑ ↓ 排序；已完成事项自动置底。</p><form class="add" id="form"><input id="task" maxlength="150" placeholder="今天想完成什么？" aria-label="新增待办" required><button class="primary" aria-label="添加待办">＋</button></form><ul id="list"></ul><div class="empty muted" id="empty">还没有待办。<br>从一件小事开始就很好。</div></section></div><footer>留一点时间给专注，也留一点给自己。 · 数据仅保存在当前浏览器</footer></main>
 <script>
 const $=id=>document.getElementById(id);
 let mode='focus',direction='down',total=1500,remaining=1500,elapsed=0,startedAt=0,deadline=0,running=false,ticker=null;
 const durations={focus:25,rest:5};
+let session=null,currentSubject='自由专注';
+function readStored(key){try{const v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[];}catch{return [];}}
+let plans=readStored('mint-plans').filter(p=>p&&typeof p.name==='string'&&['up','down'].includes(p.direction)&&Number.isInteger(p.minutes)&&p.minutes>=1&&p.minutes<=180);
+let records=readStored('mint-records').filter(r=>r&&typeof r.name==='string'&&Number.isFinite(r.start)&&Number.isFinite(r.end)&&Number.isFinite(r.seconds));
+function persist(key,value){try{localStorage.setItem(key,JSON.stringify(value));}catch{$('storage-note').textContent='浏览器存储不可用，本次更改刷新后可能丢失。';}}
+function finishSession(reason,end=Date.now()){
+ if(!session)return;
+ records.unshift({name:session.name,start:session.start,end,seconds:Math.max(0,isUp()?elapsed:total-remaining),direction:session.direction,reason});
+ session=null;persist('mint-records',records);drawHistory();
+}
+function drawHistory(){
+ $('history-list').replaceChildren();
+ records.forEach(r=>{const li=document.createElement('li'),title=document.createElement('strong'),detail=document.createElement('small');title.textContent=r.name+' · '+r.reason;const sec=Math.floor(r.seconds);detail.textContent=new Date(r.start).toLocaleString('zh-CN')+' → '+new Date(r.end).toLocaleString('zh-CN')+' ｜ '+Math.floor(sec/60)+'分'+sec%60+'秒 ｜ '+(r.direction==='up'?'正向':'倒计时');li.append(title,detail);$('history-list').append(li);});$('history-empty').hidden=records.length>0;
+}
+
 const isUp=()=>mode==='focus'&&direction==='up';
 const hasProgress=()=>running||(isUp()?elapsed>0:remaining<total);
 function render(){
@@ -30,18 +45,18 @@ function render(){
 function stop(){clearInterval(ticker);ticker=null;running=false;}
 function tick(){
  if(isUp()){elapsed=Math.max(0,(Date.now()-startedAt)/1000);}
- else{remaining=Math.max(0,(deadline-Date.now())/1000);if(remaining===0){stop();$('status').textContent=mode==='focus'?'本轮专注完成，休息一下吧。':'休息结束，准备开始下一轮吧。';}}
+ else{remaining=Math.max(0,(deadline-Date.now())/1000);if(remaining===0){finishSession('完成',deadline);stop();$('status').textContent=mode==='focus'?'本轮专注完成，休息一下吧。':'休息结束，准备开始下一轮吧。';}}
  render();
 }
-$('start').onclick=()=>{if(running)return;if(isUp())startedAt=Date.now()-elapsed*1000;else{if(remaining<=0)remaining=total;deadline=Date.now()+remaining*1000;}running=true;$('status').textContent=mode==='focus'?'正在专注，享受当下。':'放松一下，深呼吸。';ticker=setInterval(tick,200);render();};
+$('start').onclick=()=>{if(running)return;if(mode==='focus'&&!session)session={name:currentSubject,start:Date.now(),direction};if(isUp())startedAt=Date.now()-elapsed*1000;else{if(remaining<=0)remaining=total;deadline=Date.now()+remaining*1000;}running=true;$('status').textContent=mode==='focus'?'正在专注，享受当下。':'放松一下，深呼吸。';ticker=setInterval(tick,200);render();};
 $('pause').onclick=()=>{if(!running)return;tick();if(running){stop();$('status').textContent='已暂停，按继续恢复计时。';render();}};
-$('end').onclick=()=>{if(running)tick();const spent=Math.floor(isUp()?elapsed:total-remaining);stop();remaining=total;elapsed=0;$('status').textContent='本轮已结束，累计 '+Math.floor(spent/60)+' 分 '+spent%60+' 秒。';render();};
-function reset(){stop();total=remaining=durations[mode]*60;elapsed=0;$('minutes').value=durations[mode];$('status').textContent='准备好就开始吧';$('focus').classList.toggle('active',mode==='focus');$('rest').classList.toggle('active',mode==='rest');render();}
-function change(next){if(next===mode)return;if(hasProgress()&&!confirm('切换模式将结束当前计时，继续吗？'))return;mode=next;reset();}
+$('end').onclick=()=>{if(running)tick();const spent=Math.floor(isUp()?elapsed:total-remaining);finishSession('手动结束');stop();remaining=total;elapsed=0;$('status').textContent='本轮已结束，累计 '+Math.floor(spent/60)+' 分 '+spent%60+' 秒。';render();};
+function reset(){if(running)tick();finishSession('切换结束');stop();total=remaining=durations[mode]*60;elapsed=0;$('minutes').value=durations[mode];$('status').textContent='准备好就开始吧';$('focus').classList.toggle('active',mode==='focus');$('rest').classList.toggle('active',mode==='rest');render();}
+function change(next){if(next===mode)return;if(hasProgress()&&!confirm('切换模式将结束当前计时，继续吗？'))return;reset();mode=next;reset();}
 $('focus').onclick=()=>change('focus');$('rest').onclick=()=>change('rest');
-function changeDirection(next){if(direction===next)return;if(hasProgress()&&!confirm('切换计时方式将结束当前计时，继续吗？'))return;direction=next;reset();}
+function changeDirection(next){if(direction===next)return;if(hasProgress()&&!confirm('切换计时方式将结束当前计时，继续吗？'))return;reset();direction=next;reset();}
 $('up').onclick=()=>changeDirection('up');$('down').onclick=()=>changeDirection('down');
-$('apply').onclick=()=>{const n=Number($('minutes').value);if(!Number.isInteger(n)||n<1||n>180){$('status').textContent='请输入 1 到 180 之间的整数分钟。';return;}if(hasProgress()&&!confirm('应用新时长将结束当前计时，继续吗？'))return;durations[mode]=n;reset();};
+$('apply').onclick=()=>{const n=Number($('minutes').value);if(!Number.isInteger(n)||n<1||n>180){$('status').textContent='请输入 1 到 180 之间的整数分钟。';return;}if(hasProgress()&&!confirm('应用新时长将结束当前计时，继续吗？'))return;reset();durations[mode]=n;reset();};
 document.addEventListener('visibilitychange',()=>{if(running)tick();});
 let day='',tasks=[];const dayKey=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();};
 function loadDay(){day=dayKey();$('date').textContent=new Date().toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'long'});try{tasks=JSON.parse(localStorage.getItem('mint-tasks-'+day)||'[]');if(!Array.isArray(tasks))tasks=[];tasks=tasks.filter(t=>t&&typeof t.text==='string');}catch{tasks=[];}draw();}
@@ -75,14 +90,25 @@ function draw(){
 $('form').onsubmit=e=>{e.preventDefault();if(dayKey()!==day)loadDay();const text=$('task').value.trim();if(!text)return;tasks.push({text,done:false});save();draw();$('task').value='';};
 setInterval(()=>{if(dayKey()!==day)loadDay();},1000);loadDay();render();
 
+
 function showPage(page){
- const tasksPage=page==='tasks';
- $('timer-page').hidden=tasksPage;$('tasks-page').hidden=!tasksPage;
- $('nav-timer').classList.toggle('active',!tasksPage);$('nav-tasks').classList.toggle('active',tasksPage);
- $('nav-timer').setAttribute('aria-current',tasksPage?'false':'page');$('nav-tasks').setAttribute('aria-current',tasksPage?'page':'false');
- $('page-title').textContent=tasksPage?'把今天的事，一件件做好。':'慢慢来，一次专注一件事。';
- $('page-description').textContent=tasksPage?'安排优先级，让每一步都更从容。':'给自己一段安静的时间，也别忘了好好休息。';
+ ['timer','tasks','plans'].forEach(name=>{const active=name===page;$(name+'-page').hidden=!active;$('nav-'+name).classList.toggle('active',active);$('nav-'+name).setAttribute('aria-current',active?'page':'false');});
+ $('page-title').textContent=page==='tasks'?'把今天的事，一件件做好。':page==='plans'?'为想做的事，留一段时间。':'慢慢来，一次专注一件事。';
+ $('page-description').textContent=page==='tasks'?'安排优先级，让每一步都更从容。':page==='plans'?'选择一个计划，开始今天的专注。':'给自己一段安静的时间，也别忘了好好休息。';
 }
-$('nav-timer').onclick=()=>showPage('timer');$('nav-tasks').onclick=()=>showPage('tasks');
-showPage('timer');
+['timer','tasks','plans'].forEach(name=>$('nav-'+name).onclick=()=>showPage(name));
+let editingPlan=null;
+function clearPlanForm(){editingPlan=null;$('plan-name').value='';$('plan-direction').value='down';$('plan-duration').value=50;$('plan-duration-label').hidden=false;$('plan-save').textContent='保存计划';$('plan-cancel').hidden=true;}
+$('plan-direction').onchange=()=>{$('plan-duration-label').hidden=$('plan-direction').value==='up';$('plan-duration').required=$('plan-direction').value==='down';};
+$('plan-cancel').onclick=clearPlanForm;
+$('plan-form').onsubmit=e=>{e.preventDefault();const name=$('plan-name').value.trim(),dir=$('plan-direction').value,minutes=dir==='up'?50:Number($('plan-duration').value);if(!name||!Number.isInteger(minutes)||minutes<1||minutes>180)return;const p={name,direction:dir,minutes};if(editingPlan!==null)plans[editingPlan]=p;else plans.push(p);persist('mint-plans',plans);clearPlanForm();drawPlans();};
+function startPlan(p){if(hasProgress()&&!confirm('开始计划将结束当前计时，继续吗？'))return;reset();currentSubject=p.name;mode='focus';direction=p.direction;durations.focus=p.minutes;reset();$('focus-label').textContent=currentSubject;showPage('timer');$('start').onclick();}
+function drawPlans(){
+ $('plan-list').replaceChildren();plans.forEach((p,i)=>{const li=document.createElement('li'),info=document.createElement('span'),name=document.createElement('strong'),detail=document.createElement('small');info.className='plan-info';name.textContent=p.name;detail.textContent=p.direction==='up'?'正向计时':p.minutes+' 分钟 · 倒计时';info.append(name,detail);
+ const start=document.createElement('button');start.textContent='开始';start.className='primary';start.onclick=()=>startPlan(p);
+ const edit=document.createElement('button');edit.textContent='编辑';edit.onclick=()=>{editingPlan=i;$('plan-name').value=p.name;$('plan-direction').value=p.direction;$('plan-duration').value=p.minutes;$('plan-direction').onchange();$('plan-save').textContent='保存修改';$('plan-cancel').hidden=false;$('plan-name').focus();};
+ const del=document.createElement('button');del.textContent='删除';del.onclick=()=>{if(!confirm('删除计划“'+p.name+'”？'))return;plans.splice(i,1);clearPlanForm();persist('mint-plans',plans);drawPlans();};
+ li.append(info,start,edit,del);$('plan-list').append(li);});$('plans-empty').hidden=plans.length>0;
+}
+drawHistory();drawPlans();showPage('timer');
 </script></html>
