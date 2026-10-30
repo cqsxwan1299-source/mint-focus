@@ -9,11 +9,12 @@ select{font:inherit;padding:10px;border:1px solid #c5dcd6;border-radius:10px;bac
 @media(min-width:701px){main{padding-left:24px;padding-right:24px}.side-nav{left:0;transform:translate(-145px,-50%);width:176px;padding:10px 22px 10px 10px;border-radius:0 22px 22px 0;transition:transform .24s ease}.side-nav:hover,.side-nav:focus-within{transform:translate(0,-50%)}.side-nav:after{content:'';position:absolute;right:9px;top:calc(50% - 22px);height:44px;width:4px;border-radius:4px;background:#75ab9d;pointer-events:none}.side-nav button{width:100%;padding:14px 10px}.side-nav .nav-label{font-size:15px}}
 .plans-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}.plans-heading h2{font-size:22px;margin:0}.add-plan{font-size:27px;width:44px;height:44px;display:grid;place-items:center;padding:0;border-radius:14px}.plans{min-height:380px}#plan-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:28px}#plan-list li{padding:20px;border:1px solid #d7e9e2;border-radius:18px;background:#f4fbf7;text-align:center;justify-content:center;gap:10px}#plan-list .plan-info{flex-basis:100%;margin-bottom:8px}#plan-list .plan-info strong{font-size:21px}#plan-list button{padding:8px 14px}#plans-empty{text-align:center;padding:65px 0}dialog{width:min(460px,calc(100% - 32px));max-height:85vh;overflow:auto;border:1px solid white;border-radius:24px;padding:28px;color:#244b4b;background:#f3fbf7;box-shadow:0 24px 100px #244b4b30}dialog::backdrop{background:#244b4b40;backdrop-filter:blur(5px)}dialog .plans-heading{margin-bottom:24px}#plan-form input,#plan-form select{width:100%}@media(prefers-reduced-motion:reduce){.side-nav{transition:none}}
 #plan-list{display:flex;flex-direction:column}#plan-list li{text-align:left;justify-content:flex-start;flex-wrap:nowrap}#plan-list .plan-info{flex:1;min-width:0;margin:0;overflow-wrap:anywhere}#plan-list button{flex-shrink:0}.range-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center}#custom-range{display:flex;flex-wrap:wrap;gap:12px}.range-controls input{max-width:170px}.stats-overview{display:grid;grid-template-columns:230px 1fr;gap:28px;align-items:center;margin-top:25px}#pie{width:210px;height:210px;border-radius:50%;background:#e0eeea;box-shadow:0 8px 30px #396d6510}#stats-total{font-size:26px}.legend-dot{width:12px;height:12px;border-radius:4px;flex-shrink:0}#stats-legend li{font-size:14px;gap:10px}.stats-note{font-size:12px;line-height:1.7;margin-top:25px}#history-list li{display:block;font-size:14px;line-height:1.8}#history-list small{display:block}.back-plans{display:block;margin-bottom:20px}#range-error{color:#9a5545;font-size:14px}@media(max-width:700px){.stats-overview{grid-template-columns:1fr}#pie{margin:auto}#plan-list li{flex-wrap:wrap}#plan-list .plan-info{flex-basis:100%;margin-bottom:8px}#stats-total{text-align:center}.stats-overview>div>.muted{text-align:center}}
+.live-time{text-align:right;display:flex;flex-direction:column;gap:4px}#wall-clock{font-size:22px;font-variant-numeric:tabular-nums;letter-spacing:1px}.timeline-day{margin:22px 0}.timeline-day>strong{font-size:14px}.timeline-scroll{overflow-x:auto;padding:14px 10px 6px}.timeline-inner{min-width:720px}.timeline-axis{position:relative;height:24px;font-size:10px;color:#607e7e}.timeline-axis span{position:absolute;transform:translateX(-50%)}.timeline-track{position:relative;border:1px solid #cadfd6;border-radius:6px;background:repeating-linear-gradient(to right,#e6f1ec 0,#e6f1ec calc(100% / 24 - 1px),#c5dcd1 calc(100% / 24 - 1px),#c5dcd1 calc(100% / 24))}.time-block{position:absolute;height:28px;border-radius:4px;padding:4px 0;color:white;font-size:11px;overflow:hidden;white-space:nowrap;min-width:1px}.time-block:hover,.time-block:focus-visible{z-index:2;filter:brightness(.9)}#timeline-detail{font-size:13px;line-height:1.7}
 </style>
-<header><div class="brand">◒ Mint Focus <small>薄荷时光</small></div><small id="date"></small></header>
+<header><div class="brand">◒ Mint Focus <small>薄荷时光</small></div><div class="live-time"><small id="date"></small><time id="wall-clock"></time></div></header>
 <nav class="side-nav" aria-label="功能导航"><button id="nav-plans"><span aria-hidden="true">▦</span><span class="nav-label">专注计划</span></button><button id="nav-tasks"><span aria-hidden="true">☑</span><span class="nav-label">待办清单</span></button><button id="nav-history"><span aria-hidden="true">◴</span><span class="nav-label">专注记录</span></button></nav><main><div class="intro"><small>MAKE ROOM FOR FOCUS</small><h1 id="page-title">慢慢来，一次专注一件事。</h1><p class="muted" id="page-description">给自己一段安静的时间，也别忘了好好休息。</p></div>
 <div class="grid"><section id="timer-page" hidden class="card timer" aria-label="番茄钟"><div class="tabs"><button id="focus" class="active">专注</button><button id="rest">休息</button></div><div id="directions" class="tabs directions" role="group" aria-label="专注计时方式"><button id="up" aria-pressed="false">正向计时</button><button id="down" class="active" aria-pressed="true">倒计时</button></div><button id="back-plans" class="back-plans">‹ 返回专注计划</button><p id="focus-label" class="muted">自由专注</p><div class="clock" id="clock" role="timer">25:00</div><div class="status muted" id="status" aria-live="polite">准备好就开始吧</div><div class="controls"><button id="start" class="primary">开始专注</button><button id="pause" disabled>暂停</button><button id="end" disabled>结束</button></div><div class="custom" id="custom"><label for="minutes">自定义时长</label> <input id="minutes" type="number" min="1" max="180" value="25"> 分钟 <button id="apply">应用</button></div><div class="progress" id="progress"><i id="bar"></i></div></section>
-<section class="card plans" id="plans-page" hidden aria-label="专注计划"><div class="plans-heading"><h2>专注计划</h2><button id="add-plan" class="primary add-plan" aria-label="添加专注计划" title="添加专注计划">＋</button></div><p class="muted">把想投入的事情存下来，准备好后就开始。</p><ul id="plan-list"></ul><p id="plans-empty" class="muted">还没有计划，添加第一项吧。</p></section><section class="card" id="history-page" hidden aria-label="专注统计"><h2>专注记录</h2><div class="range-controls"><label>统计时间 <select id="stats-range"><option value="today">今天</option><option value="week">本周</option><option value="custom">自定义日期</option></select></label><div id="custom-range" hidden><label>开始 <input id="range-start" type="date"></label><label>结束 <input id="range-end" type="date"></label></div></div><p id="range-error" role="status"></p><div class="stats-overview"><div><div class="muted">累计专注时长</div><h2 id="stats-total">0分0秒</h2><div id="pie" role="img" aria-label="暂无专注记录"></div></div><ul id="stats-legend"></ul></div><p class="muted stats-note">按每轮专注的开始日期归入统计，实际专注时长不含暂停；本周从周一开始。</p><h3>时间明细</h3><p id="storage-note" role="status"></p><ul id="history-list"></ul><p id="history-empty" class="muted">所选时间内还没有专注记录。</p></section><section id="tasks-page" class="card tasks" hidden aria-label="每日待办"><h2>今日待办 <small id="count"></small></h2><p class="muted">越靠前，优先级越高。拖动 ⠿ 或用 ↑ ↓ 排序；已完成事项自动置底。</p><form class="add" id="form"><input id="task" maxlength="150" placeholder="今天想完成什么？" aria-label="新增待办" required><button class="primary" aria-label="添加待办">＋</button></form><ul id="list"></ul><div class="empty muted" id="empty">还没有待办。<br>从一件小事开始就很好。</div></section></div><footer>留一点时间给专注，也留一点给自己。 · 数据仅保存在当前浏览器</footer></main>
+<section class="card plans" id="plans-page" hidden aria-label="专注计划"><div class="plans-heading"><h2>专注计划</h2><button id="add-plan" class="primary add-plan" aria-label="添加专注计划" title="添加专注计划">＋</button></div><p class="muted">把想投入的事情存下来，准备好后就开始。</p><ul id="plan-list"></ul><p id="plans-empty" class="muted">还没有计划，添加第一项吧。</p></section><section class="card" id="history-page" hidden aria-label="专注统计"><h2>专注记录</h2><div class="range-controls"><label>统计时间 <select id="stats-range"><option value="today">今天</option><option value="week">本周</option><option value="month">本月</option><option value="custom">自定义日期</option></select></label><div id="custom-range" hidden><label>开始 <input id="range-start" type="date"></label><label>结束 <input id="range-end" type="date"></label></div></div><p id="range-error" role="status"></p><div class="stats-overview"><div><div class="muted">累计专注时长</div><h2 id="stats-total">0分0秒</h2><div id="pie" role="img" aria-label="暂无专注记录"></div></div><ul id="stats-legend"></ul></div><p class="muted stats-note">按每轮专注的开始日期归入统计，实际专注时长不含暂停；本周从周一开始。</p><h3>24 小时学习分布</h3><p class="muted stats-note">每格一小时，色块长度表示学习时间；悬停或点击查看内容。新版记录扣除暂停空档，旧记录以浅色估算显示。</p><div id="daily-timeline"></div><p id="timeline-detail" role="status" class="muted"></p><h3>时间明细</h3><p id="storage-note" role="status"></p><ul id="history-list"></ul><p id="history-empty" class="muted">所选时间内还没有专注记录。</p></section><section id="tasks-page" class="card tasks" hidden aria-label="每日待办"><h2>今日待办 <small id="count"></small></h2><p class="muted">越靠前，优先级越高。拖动 ⠿ 或用 ↑ ↓ 排序；已完成事项自动置底。</p><form class="add" id="form"><input id="task" maxlength="150" placeholder="今天想完成什么？" aria-label="新增待办" required><button class="primary" aria-label="添加待办">＋</button></form><ul id="list"></ul><div class="empty muted" id="empty">还没有待办。<br>从一件小事开始就很好。</div></section></div><footer>留一点时间给专注，也留一点给自己。 · 数据仅保存在当前浏览器</footer></main>
 <dialog id="plan-dialog" aria-labelledby="plan-dialog-title"><div class="plans-heading"><h2 id="plan-dialog-title">添加专注计划</h2><button id="close-plan" type="button" aria-label="关闭弹窗">×</button></div><form id="plan-form"><label>专注内容<input id="plan-name" maxlength="80" required placeholder="例如：数学"></label><label>计时方式<select id="plan-direction"><option value="down">倒计时</option><option value="up">正向计时</option></select></label><label id="plan-duration-label">时长（分钟）<input id="plan-duration" type="number" min="1" max="180" value="50"></label><div><button class="primary" id="plan-save">保存计划</button> <button type="button" id="plan-cancel" hidden>取消编辑</button></div></form></dialog><script>
 const $=id=>document.getElementById(id);
 let mode='focus',direction='down',total=1500,remaining=1500,elapsed=0,startedAt=0,deadline=0,running=false,ticker=null;
@@ -23,9 +24,11 @@ function readStored(key){try{const v=JSON.parse(localStorage.getItem(key)||'[]')
 let plans=readStored('mint-plans').filter(p=>p&&typeof p.name==='string'&&['up','down'].includes(p.direction)&&Number.isInteger(p.minutes)&&p.minutes>=1&&p.minutes<=180);
 let records=readStored('mint-records').filter(r=>r&&typeof r.name==='string'&&Number.isFinite(r.start)&&Number.isFinite(r.end)&&Number.isFinite(r.seconds));
 function persist(key,value){try{localStorage.setItem(key,JSON.stringify(value));}catch{$('storage-note').textContent='浏览器存储不可用，本次更改刷新后可能丢失。';}}
+function closeSegment(end){if(session&&session.activeStart!==null){if(end>session.activeStart)session.segments.push([session.activeStart,end]);session.activeStart=null;}}
 function finishSession(reason,end=Date.now()){
  if(!session)return;
- records.unshift({name:session.name,start:session.start,end,seconds:Math.max(0,isUp()?elapsed:total-remaining),direction:session.direction,reason});
+ closeSegment(end);
+ records.unshift({name:session.name,start:session.start,end,seconds:Math.max(0,isUp()?elapsed:total-remaining),direction:session.direction,segments:session.segments,reason});
  session=null;persist('mint-records',records);drawHistory();
 }
 function dateInput(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -33,6 +36,7 @@ function selectedRange(){
  const now=new Date(),start=new Date(now.getFullYear(),now.getMonth(),now.getDate());let end=new Date(start);end.setDate(end.getDate()+1);
  const choice=$('stats-range').value||'today';
  if(choice==='week'){start.setDate(start.getDate()-(start.getDay()+6)%7);end=new Date(start);end.setDate(end.getDate()+7);}
+ if(choice==='month'){start.setDate(1);end=new Date(start.getFullYear(),start.getMonth()+1,1);}
  if(choice==='custom'){
  const from=$('range-start').value,to=$('range-end').value;
  if(!/^\d{4}-\d{2}-\d{2}$/.test(from)||!/^\d{4}-\d{2}-\d{2}$/.test(to))return null;
@@ -53,7 +57,7 @@ function drawHistory(){
  $('pie').style.background=totalSeconds?'conic-gradient('+slices.join(',')+')':'#e0eeea';
  $('pie').setAttribute('aria-label',totalSeconds?'各专注内容时长占比，详见右侧列表':'暂无专注记录');
  $('history-list').replaceChildren();
- filtered.forEach(r=>{const li=document.createElement('li'),title=document.createElement('strong'),detail=document.createElement('small');title.textContent=r.name+' · '+formatDuration(r.seconds);detail.textContent=new Date(r.start).toLocaleString('zh-CN')+' → '+new Date(r.end).toLocaleString('zh-CN')+' ｜ '+(r.direction==='up'?'正向':'倒计时')+' ｜ '+r.reason;li.append(title,detail);$('history-list').append(li);});$('history-empty').hidden=filtered.length>0;
+ filtered.forEach(r=>{const li=document.createElement('li'),title=document.createElement('strong'),detail=document.createElement('small');title.textContent=r.name+' · '+formatDuration(r.seconds);detail.textContent=new Date(r.start).toLocaleString('zh-CN')+' → '+new Date(r.end).toLocaleString('zh-CN')+' ｜ '+(r.direction==='up'?'正向':'倒计时')+' ｜ '+r.reason;li.append(title,detail);$('history-list').append(li);});$('history-empty').hidden=filtered.length>0;drawTimeline(filtered,range);
 }
 const isUp=()=>mode==='focus'&&direction==='up';
 const hasProgress=()=>running||(isUp()?elapsed>0:remaining<total);
@@ -74,8 +78,8 @@ function tick(){
  else{remaining=Math.max(0,(deadline-Date.now())/1000);if(remaining===0){finishSession('完成',deadline);stop();$('status').textContent=mode==='focus'?'本轮专注完成，休息一下吧。':'休息结束，准备开始下一轮吧。';}}
  render();
 }
-$('start').onclick=()=>{if(running)return;if(mode==='focus'&&!session)session={name:currentSubject,start:Date.now(),direction};if(isUp())startedAt=Date.now()-elapsed*1000;else{if(remaining<=0)remaining=total;deadline=Date.now()+remaining*1000;}running=true;$('status').textContent=mode==='focus'?'正在专注，享受当下。':'放松一下，深呼吸。';ticker=setInterval(tick,200);render();};
-$('pause').onclick=()=>{if(!running)return;tick();if(running){stop();$('status').textContent='已暂停，按继续恢复计时。';render();}};
+$('start').onclick=()=>{if(running)return;if(mode==='focus'&&!session)session={name:currentSubject,start:Date.now(),direction,segments:[],activeStart:null};if(session)session.activeStart=Date.now();if(isUp())startedAt=Date.now()-elapsed*1000;else{if(remaining<=0)remaining=total;deadline=Date.now()+remaining*1000;}running=true;$('status').textContent=mode==='focus'?'正在专注，享受当下。':'放松一下，深呼吸。';ticker=setInterval(tick,200);render();};
+$('pause').onclick=()=>{if(!running)return;tick();if(running){closeSegment(Date.now());stop();$('status').textContent='已暂停，按继续恢复计时。';render();}};
 $('end').onclick=()=>{if(running)tick();const spent=Math.floor(isUp()?elapsed:total-remaining);finishSession('手动结束');stop();remaining=total;elapsed=0;$('status').textContent='本轮已结束，累计 '+Math.floor(spent/60)+' 分 '+spent%60+' 秒。';render();};
 function reset(){if(running)tick();finishSession('切换结束');stop();total=remaining=durations[mode]*60;elapsed=0;$('minutes').value=durations[mode];$('status').textContent='准备好就开始吧';$('focus').classList.toggle('active',mode==='focus');$('rest').classList.toggle('active',mode==='rest');render();}
 function change(next){if(next===mode)return;if(hasProgress()&&!confirm('切换模式将结束当前计时，继续吗？'))return;reset();mode=next;reset();}
@@ -148,5 +152,43 @@ function drawPlans(){
  const del=document.createElement('button');del.textContent='删除';del.onclick=()=>{if(!confirm('删除计划“'+p.name+'”？'))return;plans.splice(i,1);clearPlanForm();persist('mint-plans',plans);drawPlans();};
  li.append(info,start,edit,del);$('plan-list').append(li);});$('plans-empty').hidden=plans.length>0;
 }
+
+function timelineSegments(record){
+ if(Array.isArray(record.segments))return record.segments.filter(s=>Array.isArray(s)&&Number.isFinite(s[0])&&Number.isFinite(s[1])&&s[1]>s[0]);
+ return [[record.start,Math.min(record.end,record.start+Math.max(0,record.seconds)*1000)]];
+}
+function drawTimeline(filtered,range){
+ $('daily-timeline').replaceChildren();$('timeline-detail').textContent='';
+ if(!range)return;
+ const days=new Map(),palette=['#448e83','#79b9c7','#a5c987','#8f9ecc','#d6bd80','#a88eb0'],names=[...new Set(filtered.map(r=>r.name))];
+ filtered.forEach(r=>timelineSegments(r).forEach(([begin,finish])=>{
+ let cursor=begin;
+ while(cursor<finish){
+ const d=new Date(cursor),midnight=new Date(d.getFullYear(),d.getMonth(),d.getDate()),next=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1),end=Math.min(finish,+next),key=dateInput(d);
+ if(!days.has(key))days.set(key,[]);
+ days.get(key).push({r,begin:cursor,end,left:(cursor-midnight)/(next-midnight)*100,width:(end-cursor)/(next-midnight)*100,color:palette[names.indexOf(r.name)%palette.length]});cursor=end;
+ }
+ }));
+ if(!days.size){const p=document.createElement('p');p.className='muted';p.textContent='所选时间内暂无学习时间段。';$('daily-timeline').append(p);return;}
+ [...days].sort((a,b)=>b[0].localeCompare(a[0])).forEach(([day,blocks])=>{
+ const wrap=document.createElement('div');wrap.className='timeline-day';
+ const label=document.createElement('strong');label.textContent=day;
+ const scroll=document.createElement('div');scroll.className='timeline-scroll';
+ const inner=document.createElement('div');inner.className='timeline-inner';
+ const axis=document.createElement('div');axis.className='timeline-axis';
+ for(let i=0;i<=24;i++){const t=document.createElement('span');t.textContent=String(i).padStart(2,'0');t.style.left=(i/24*100)+'%';axis.append(t);}
+ const track=document.createElement('div');track.className='timeline-track';
+ const laneEnds=[];
+ blocks.sort((a,b)=>a.begin-b.begin).forEach(b=>{
+ let lane=laneEnds.findIndex(end=>end<=b.begin);if(lane<0)lane=laneEnds.length;laneEnds[lane]=b.end;
+ const bar=document.createElement('button');bar.className='time-block';bar.style.left=b.left+'%';bar.style.width=b.width+'%';bar.style.top=(lane*36+4)+'px';bar.style.background=b.color;if(!Array.isArray(b.r.segments))bar.style.opacity='.55';
+ const text=b.r.name+' · '+new Date(b.begin).toLocaleTimeString('zh-CN',{hour12:false})+'–'+new Date(b.end).toLocaleTimeString('zh-CN',{hour12:false})+' · '+formatDuration((b.end-b.begin)/1000)+(Array.isArray(b.r.segments)?'':'（旧记录估算）');
+ bar.textContent=b.r.name;bar.title=text;bar.setAttribute('aria-label',text);bar.onclick=()=>{$('timeline-detail').textContent=text;};track.append(bar);
+ });track.style.height=Math.max(48,laneEnds.length*36+8)+'px';inner.append(axis,track);scroll.append(inner);wrap.append(label,scroll);$('daily-timeline').append(wrap);
+ });
+}
+function updateWallClock(){const now=new Date();$('date').textContent=now.toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'long'});$('wall-clock').textContent=now.toLocaleTimeString('zh-CN',{hour12:false});}
+updateWallClock();setInterval(updateWallClock,1000);
+
 drawHistory();drawPlans();showPage('plans');
 </script></html>
