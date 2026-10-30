@@ -2,25 +2,43 @@
 <html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mint Focus · 薄荷时光</title>
 <style>
 *{box-sizing:border-box}body{margin:0;color:#244b4b;font:16px system-ui,sans-serif;background:radial-gradient(ellipse at 10% 20%,#c9e9f9,transparent 65%),radial-gradient(ellipse at 90% 90%,#bcebd7,transparent 60%),#eff8f3;min-height:100vh}header{max-width:1100px;margin:auto;padding:36px 24px;display:flex;justify-content:space-between;align-items:center}.brand{font-size:22px;font-weight:750}small,.muted{color:#607e7e}main{max-width:1000px;margin:35px auto;padding:0 24px}h1{font-size:38px;margin-bottom:12px;letter-spacing:-1px}.intro{margin-bottom:35px}.grid{display:grid;grid-template-columns:1.4fr 1fr;gap:24px}.card{background:#ffffffb5;border:1px solid #fff;border-radius:28px;padding:30px;box-shadow:0 18px 65px #396d6510}.timer{text-align:center}.tabs{display:flex;justify-content:center;gap:8px}button,input{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 19px;background:#e6f1ee;color:#335b58}button.active,button.primary{background:#327c70;color:white}button:disabled{opacity:.45;cursor:default}.clock{font-size:clamp(64px,9vw,100px);font-weight:650;letter-spacing:-5px;font-variant-numeric:tabular-nums;margin:34px 0 8px}.status{min-height:24px;margin-bottom:22px}.controls{display:flex;justify-content:center;gap:10px}.custom{margin-top:27px;font-size:14px}input{border:1px solid #c5dcd6;border-radius:10px;background:#ffffffbd;padding:10px;color:#244b4b}input[type=number]{width:80px}.progress{height:5px;background:#dfebe7;margin:30px 0 0;border-radius:5px;overflow:hidden}.progress i{display:block;height:100%;background:#6bb6a2;width:0}.tasks h2{font-size:20px;margin-top:0}.add{display:flex;gap:8px}.add input{width:100%;min-width:0}.add button{padding:10px 14px}ul{padding:0;list-style:none}li{display:flex;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid #dbe9e4}li span{flex:1;overflow-wrap:anywhere}li.done span{text-decoration:line-through;color:#849795}li button{padding:3px 9px;background:transparent}.empty{padding:25px 0;line-height:1.8;font-size:14px}footer{text-align:center;margin:30px;color:#64827c;font-size:13px}@media(max-width:700px){.grid{grid-template-columns:1fr}main{margin:0 auto}h1{font-size:30px}header{padding:24px}.card{padding:24px}}
-.drag-handle{cursor:grab;touch-action:auto}.drag-handle:active{cursor:grabbing}li.dragging{opacity:.4}li.drop-target{outline:2px dashed #327c70;border-radius:8px}li{gap:6px}li button{padding:5px;min-width:26px}li input[type=checkbox]{flex-shrink:0}li span{min-width:0}button:focus-visible{outline:2px solid #327c70;outline-offset:3px}</style>
+.drag-handle{cursor:grab;touch-action:auto}.drag-handle:active{cursor:grabbing}li.dragging{opacity:.4}li.drop-target{outline:2px dashed #327c70;border-radius:8px}li{gap:6px}li button{padding:5px;min-width:26px}li input[type=checkbox]{flex-shrink:0}li span{min-width:0}button:focus-visible{outline:2px solid #327c70;outline-offset:3px}.directions{margin-top:18px}.directions button{font-size:14px;padding:8px 18px}.directions button.active{background:#d0e9e2;color:#245e54;box-shadow:inset 0 0 0 1px #80b9a9}[hidden]{display:none!important}</style>
 <header><div class="brand">◒ Mint Focus <small>薄荷时光</small></div><small id="date"></small></header>
 <main><div class="intro"><small>MAKE ROOM FOR FOCUS</small><h1>慢慢来，一次专注一件事。</h1><p class="muted">给自己一段安静的时间，也别忘了好好休息。</p></div>
-<div class="grid"><section class="card timer" aria-label="番茄钟"><div class="tabs"><button id="focus" class="active">专注</button><button id="rest">休息</button></div><div class="clock" id="clock" role="timer">25:00</div><div class="status muted" id="status" aria-live="polite">准备好就开始吧</div><div class="controls"><button id="start" class="primary">开始专注</button><button id="pause" disabled>暂停</button><button id="end" disabled>结束</button></div><div class="custom"><label for="minutes">自定义时长</label> <input id="minutes" type="number" min="1" max="180" value="25"> 分钟 <button id="apply">应用</button></div><div class="progress"><i id="bar"></i></div></section>
+<div class="grid"><section class="card timer" aria-label="番茄钟"><div class="tabs"><button id="focus" class="active">专注</button><button id="rest">休息</button></div><div id="directions" class="tabs directions" role="group" aria-label="专注计时方式"><button id="up" aria-pressed="false">正向计时</button><button id="down" class="active" aria-pressed="true">倒计时</button></div><div class="clock" id="clock" role="timer">25:00</div><div class="status muted" id="status" aria-live="polite">准备好就开始吧</div><div class="controls"><button id="start" class="primary">开始专注</button><button id="pause" disabled>暂停</button><button id="end" disabled>结束</button></div><div class="custom" id="custom"><label for="minutes">自定义时长</label> <input id="minutes" type="number" min="1" max="180" value="25"> 分钟 <button id="apply">应用</button></div><div class="progress" id="progress"><i id="bar"></i></div></section>
 <section class="card tasks"><h2>今日待办 <small id="count"></small></h2><p class="muted">越靠前，优先级越高。拖动 ⠿ 或用 ↑ ↓ 排序；已完成事项自动置底。</p><form class="add" id="form"><input id="task" maxlength="150" placeholder="今天想完成什么？" aria-label="新增待办" required><button class="primary" aria-label="添加待办">＋</button></form><ul id="list"></ul><div class="empty muted" id="empty">还没有待办。<br>从一件小事开始就很好。</div></section></div><footer>留一点时间给专注，也留一点给自己。 · 数据仅保存在当前浏览器</footer></main>
 <script>
 const $=id=>document.getElementById(id);
-let mode='focus',total=1500,remaining=1500,deadline=0,running=false,ticker=null;
+let mode='focus',direction='down',total=1500,remaining=1500,elapsed=0,startedAt=0,deadline=0,running=false,ticker=null;
 const durations={focus:25,rest:5};
-function render(){const s=Math.ceil(remaining);$('clock').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');document.title=$('clock').textContent+' · 薄荷时光';$('bar').style.width=(100*(1-remaining/total))+'%';$('pause').disabled=!running;$('start').disabled=running;$('end').disabled=!running&&remaining===total;$('start').textContent=remaining<total?'继续':mode==='focus'?'开始专注':'开始休息';}
+const isUp=()=>mode==='focus'&&direction==='up';
+const hasProgress=()=>running||(isUp()?elapsed>0:remaining<total);
+function render(){
+ const up=isUp(),s=up?Math.floor(elapsed):Math.ceil(remaining);
+ $('clock').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+ document.title=$('clock').textContent+' · 薄荷时光';
+ $('bar').style.width=(100*(1-remaining/total))+'%';
+ $('progress').hidden=up;$('custom').hidden=up;$('directions').hidden=mode!=='focus';
+ $('up').classList.toggle('active',direction==='up');$('down').classList.toggle('active',direction==='down');
+ $('up').setAttribute('aria-pressed',String(direction==='up'));$('down').setAttribute('aria-pressed',String(direction==='down'));
+ $('pause').disabled=!running;$('start').disabled=running;$('end').disabled=!hasProgress();
+ $('start').textContent=(up?elapsed>0:remaining>0&&remaining<total)?'继续':mode==='focus'?'开始专注':'开始休息';
+}
 function stop(){clearInterval(ticker);ticker=null;running=false;}
-function tick(){remaining=Math.max(0,(deadline-Date.now())/1000);if(remaining===0){stop();$('status').textContent=mode==='focus'?'本轮专注完成，休息一下吧。':'休息结束，准备开始下一轮吧。';}render();}
-$('start').onclick=()=>{if(running)return;if(remaining<=0)remaining=total;deadline=Date.now()+remaining*1000;running=true;$('status').textContent=mode==='focus'?'正在专注，享受当下。':'放松一下，深呼吸。';ticker=setInterval(tick,200);render();};
+function tick(){
+ if(isUp()){elapsed=Math.max(0,(Date.now()-startedAt)/1000);}
+ else{remaining=Math.max(0,(deadline-Date.now())/1000);if(remaining===0){stop();$('status').textContent=mode==='focus'?'本轮专注完成，休息一下吧。':'休息结束，准备开始下一轮吧。';}}
+ render();
+}
+$('start').onclick=()=>{if(running)return;if(isUp())startedAt=Date.now()-elapsed*1000;else{if(remaining<=0)remaining=total;deadline=Date.now()+remaining*1000;}running=true;$('status').textContent=mode==='focus'?'正在专注，享受当下。':'放松一下，深呼吸。';ticker=setInterval(tick,200);render();};
 $('pause').onclick=()=>{if(!running)return;tick();if(running){stop();$('status').textContent='已暂停，按继续恢复计时。';render();}};
-$('end').onclick=()=>{stop();remaining=total;$('status').textContent='本轮已结束，可以重新开始。';render();};
-function reset(){stop();total=remaining=durations[mode]*60;$('minutes').value=durations[mode];$('status').textContent='准备好就开始吧';$('focus').classList.toggle('active',mode==='focus');$('rest').classList.toggle('active',mode==='rest');render();}
-function change(next){if((running||remaining<total)&&!confirm('切换模式将结束当前计时，继续吗？'))return;mode=next;reset();}
+$('end').onclick=()=>{if(running)tick();const spent=Math.floor(isUp()?elapsed:total-remaining);stop();remaining=total;elapsed=0;$('status').textContent='本轮已结束，累计 '+Math.floor(spent/60)+' 分 '+spent%60+' 秒。';render();};
+function reset(){stop();total=remaining=durations[mode]*60;elapsed=0;$('minutes').value=durations[mode];$('status').textContent='准备好就开始吧';$('focus').classList.toggle('active',mode==='focus');$('rest').classList.toggle('active',mode==='rest');render();}
+function change(next){if(next===mode)return;if(hasProgress()&&!confirm('切换模式将结束当前计时，继续吗？'))return;mode=next;reset();}
 $('focus').onclick=()=>change('focus');$('rest').onclick=()=>change('rest');
-$('apply').onclick=()=>{const n=Number($('minutes').value);if(!Number.isInteger(n)||n<1||n>180){$('status').textContent='请输入 1 到 180 之间的整数分钟。';return;}if((running||remaining<total)&&!confirm('应用新时长将结束当前计时，继续吗？'))return;durations[mode]=n;reset();};
+function changeDirection(next){if(direction===next)return;if(hasProgress()&&!confirm('切换计时方式将结束当前计时，继续吗？'))return;direction=next;reset();}
+$('up').onclick=()=>changeDirection('up');$('down').onclick=()=>changeDirection('down');
+$('apply').onclick=()=>{const n=Number($('minutes').value);if(!Number.isInteger(n)||n<1||n>180){$('status').textContent='请输入 1 到 180 之间的整数分钟。';return;}if(hasProgress()&&!confirm('应用新时长将结束当前计时，继续吗？'))return;durations[mode]=n;reset();};
 document.addEventListener('visibilitychange',()=>{if(running)tick();});
 let day='',tasks=[];const dayKey=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();};
 function loadDay(){day=dayKey();$('date').textContent=new Date().toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'long'});try{tasks=JSON.parse(localStorage.getItem('mint-tasks-'+day)||'[]');if(!Array.isArray(tasks))tasks=[];tasks=tasks.filter(t=>t&&typeof t.text==='string');}catch{tasks=[];}draw();}
